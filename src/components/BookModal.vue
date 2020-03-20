@@ -17,10 +17,14 @@
                 </ion-thumbnail>
             </div>
             <div class="border-b">
+                <ion-text class="ion-text-start" color="medium">
+                    <h6 class="mb-0 ion-text-uppercase">{{getAuthors}}</h6>
+                </ion-text>
                 <ion-text class="ion-text-start">
-                    <h6 class="grey mb-0 ion-text-uppercase">{{getAuthors}}</h6>
                     <h3 class="ion-no-margin"><b>{{book.volumeInfo.title}}</b></h3>
-                    <p class="grey mt-0 mb-8">{{book.volumeInfo.publisher ? book.volumeInfo.publisher : 'Independently Published'}} - {{book.volumeInfo.publishedDate}}</p>
+                </ion-text>
+                <ion-text class="ion-text-start" color="medium">
+                    <p class="mt-0 mb-8">{{book.volumeInfo.publisher ? book.volumeInfo.publisher : 'Independently Published'}} - {{book.volumeInfo.publishedDate}}</p>
                 </ion-text>
             </div>
             <div class="" v-if="book.volumeInfo.categories">
@@ -37,7 +41,7 @@
             <div class="">
                 <ion-text class="ion-text-start">
                     <p class="mb-8 mt-8"><b>Description :</b></p>
-                    <p class="mt-0">{{book.volumeInfo.description}}</p>
+                    <p class="mt-0">{{book.volumeInfo.description ? book.volumeInfo.description : 'Doesn\'t have Description...'}}</p>
                 </ion-text>
             </div>
         </ion-content>
@@ -68,7 +72,7 @@
                     this.book.volumeInfo.authors[1] ? authors.concat(', ' + this.book.volumeInfo.authors[1]) : false
                     return authors
                 } else {
-                    return 'NULL'
+                    return 'Unknown Author'
                 }
             }
         },
@@ -107,12 +111,9 @@
     .chip {
         margin-left: 0;
     }
+
     .border-b {
         border-bottom: 1px grey solid;
-    }
-
-    .grey {
-        color: grey;
     }
     .mt-0 {
         margin-top: 0;

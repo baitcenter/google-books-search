@@ -23,9 +23,9 @@
                 </ion-img>
             </transition>
             <transition name="fade">
-                <ion-text class="errorText" v-if="this.nothing && this.isSearching">
-                    <ion-icon name="search" class="grey"></ion-icon>
-                    <h6 class="ion-no-margin grey">No Result</h6>
+                <ion-text color="medium" class="errorText" v-if="this.nothing && this.isSearching">
+                    <ion-icon name="search" style="margin-right: 4px;"></ion-icon>
+                    <h6 class="ion-no-margin">No Result</h6>
                 </ion-text>
             </transition>
         </div>
@@ -192,9 +192,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-    }
-    .grey {
-        color: grey;
     }
     .errorText {
         display: flex;
