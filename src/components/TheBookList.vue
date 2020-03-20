@@ -1,5 +1,5 @@
 <template>
-    <ion-content fullscreen scrollEvents="true">
+    <ion-content fullscreen>
         <transition name="fadeTop">
             <div class="ion-text-center ion-margin-vertical" v-show="this.loading">
                 <ion-spinner color="dark"></ion-spinner>
@@ -75,17 +75,19 @@
                 this.loading = true
                 this.getBooks()
             })
-            // this.$refs.infiniteScroll.addEventListener('ionInfinite', this.ionScrollListener)
-            this.$refs.infiniteScroll.addEventListener("ionInfinite", event => {
-                this.infiniteLoading = true
-                this.startIndex += this.maxResults
-                this.getBooks()
-                event.target.complete()
 
-                if (this.startIndex + this.maxResults >= this.totalItems) {
-                    event.target.disabled = true
-                }
-            });
+            this.$refs.infiniteScroll.addEventListener("ionInfinite", event => {
+                setTimeout(() => {
+                    this.infiniteLoading = true
+                    this.startIndex += this.maxResults
+                    this.getBooks()
+                    // event.target.complete()  // In getBooksFunction
+
+                    if (this.startIndex + this.maxResults >= this.totalItems) {
+                        event.target.disabled = true
+                    }
+                }, 600)
+            })
         },
         watch: {
             getTitleSearch: function (newSearch, oldSearch) {
@@ -160,7 +162,7 @@
                                     this.books.push(book)
                                 })
                                 // this.books.concat(response.data.items)
-
+                                this.$refs.infiniteScroll.complete()
                                 this.infiniteLoading = false
                             }
                             this.loading = false

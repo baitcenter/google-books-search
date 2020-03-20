@@ -41,6 +41,7 @@
                                    :placeholder="'Title...'"
                                    v-bind:value="titleSearch"
                                    @input="titleSearch = $event.target.value"
+                                   @ionClear="titleSearch = ''"
                                    v-if="this.showTitleSearch"
                                    key="title"
                                    class="searchBars">
@@ -49,6 +50,7 @@
                                    :placeholder="'Author...'"
                                    v-bind:value="authorSearch"
                                    @input="authorSearch = $event.target.value"
+                                   @ionClear="authorSearch = ''"
                                    v-if="this.showAuthorSearch"
                                    key="author"
                                    class="searchBars">
@@ -57,6 +59,7 @@
                                    :placeholder="'Global Search...'"
                                    v-bind:value="globalSearch"
                                    @input="globalSearch = $event.target.value"
+                                   @ionClear="globalSearch = ''"
                                    v-if="this.showGlobalSearch"
                                    key="global"
                                    class="searchBars">
