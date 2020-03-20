@@ -1,0 +1,134 @@
+<template>
+    <div id="BookModal">
+        <ion-header translucent>
+            <ion-toolbar>
+                <ion-title color="dark">{{book.volumeInfo.title}}</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button @click="dismissModal">
+                        <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding bookModalContent" fullscreen>
+            <div class="modalHeader">
+                <ion-thumbnail class="thumbnailImg">
+                    <ion-img :src="book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : require('@/assets/NotAvailable.jpg')"></ion-img>
+                </ion-thumbnail>
+            </div>
+            <div class="border-b">
+                <ion-text class="ion-text-start">
+                    <h6 class="grey mb-0 ion-text-uppercase">{{getAuthors}}</h6>
+                    <h3 class="ion-no-margin"><b>{{book.volumeInfo.title}}</b></h3>
+                    <p class="grey mt-0 mb-8">{{book.volumeInfo.publisher ? book.volumeInfo.publisher : 'Independently Published'}} - {{book.volumeInfo.publishedDate}}</p>
+                </ion-text>
+            </div>
+            <div class="" v-if="book.volumeInfo.categories">
+                <ion-text class="ion-text-start">
+                    <p class="mb-0 mt-8"><b>Categories :</b></p>
+                    <p class="ion-no-margin">
+                        <ion-chip color="tertiary" class="chip" outline
+                                  v-for="(category, index) in book.volumeInfo.categories">
+                            <ion-label>{{category}}</ion-label>
+                        </ion-chip>
+                    </p>
+                </ion-text>
+            </div>
+            <div class="">
+                <ion-text class="ion-text-start">
+                    <p class="mb-8 mt-8"><b>Description :</b></p>
+                    <p class="mt-0">{{book.volumeInfo.description}}</p>
+                </ion-text>
+            </div>
+        </ion-content>
+    </div>
+</template>
+
+<script>
+    import store from '../store';
+    import axios from 'axios'
+
+
+
+    export default {
+        name: 'BookModal',
+        props: ["book"],
+        components: {
+        },
+        data() {
+            return {
+
+            }
+        },
+        created() {
+        },
+        mounted() {
+        },
+        watch: {
+        },
+        computed: {
+            getAuthors () {
+                if (this.book.volumeInfo.authors) {
+                    let authors = this.book.volumeInfo.authors[0]
+                    this.book.volumeInfo.authors[1] ? authors.concat(', ' + this.book.volumeInfo.authors[1]) : false
+                    return authors
+                } else {
+                    return 'NULL'
+                }
+            }
+        },
+        methods: {
+            dismissModal() {
+                this.$ionic.modalController.dismiss()
+            },
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+    #BookModal {
+        /*--background: #a6a6a6;*/
+    }
+    .bookModalContent {
+        --background: #dfdfdf;
+    }
+    .thumbnailImg {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        height: auto;
+        width: 80%;
+        display: flex;
+        align-items: center;
+    }
+    .modalHeader {
+        margin-left: -16px;
+        margin-right: -16px;
+        margin-top: -16px;
+        background-color: #323232;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .chip {
+        margin-left: 0;
+    }
+    .border-b {
+        border-bottom: 1px grey solid;
+    }
+
+    .grey {
+        color: grey;
+    }
+    .mt-0 {
+        margin-top: 0;
+    }
+    .mb-0 {
+        margin-bottom: 0;
+    }
+    .mt-8 {
+        margin-top: 8px;
+    }
+    .mb-8 {
+        margin-bottom: 8px;
+    }
+</style>
