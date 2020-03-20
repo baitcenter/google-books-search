@@ -1,5 +1,5 @@
 <template>
-    <ion-content fullscreen>
+    <ion-content fullscreen scrollEvents="true">
         <transition name="fadeTop">
             <div class="ion-text-center ion-margin-vertical" v-show="this.loading">
                 <ion-spinner color="dark"></ion-spinner>
@@ -9,10 +9,17 @@
             <transition-group name="list" tag="div">
                 <BookItem v-for="(book, index) in this.books"
                           :book="book"
-                          :key="book.id + _.random(0, 1000)">
+                          :key="book.etag">
                 </BookItem>
             </transition-group>
         </ion-list>
+
+        <ion-infinite-scroll threshold="100px" ref="infiniteScroll">
+            <ion-infinite-scroll-content
+                    loading-spinner="bubbles"
+                    loading-text="Loading more data...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
 
         <div class="booksIconContainer">
             <transition name="fade">
@@ -29,8 +36,6 @@
                 </ion-text>
             </transition>
         </div>
-
-
     </ion-content>
 </template>
 
@@ -47,7 +52,7 @@
             "type",
             "lang",
             "orderBy",
-            "filter"
+            "filter",
         ],
         components: {
             BookItem
@@ -56,8 +61,10 @@
             return {
                 loading: false,
                 books: [],
-                maxResults: '10',
-                totalItems: null
+                startIndex: 0,
+                maxResults: 10,
+                totalItems: null,
+                infiniteLoading: false
             }
         },
         created() {
@@ -68,6 +75,17 @@
                 this.loading = true
                 this.getBooks()
             })
+            // this.$refs.infiniteScroll.addEventListener('ionInfinite', this.ionScrollListener)
+            this.$refs.infiniteScroll.addEventListener("ionInfinite", event => {
+                this.infiniteLoading = true
+                this.startIndex += this.maxResults
+                this.getBooks()
+                event.target.complete()
+
+                if (this.startIndex + this.maxResults >= this.totalItems) {
+                    event.target.disabled = true
+                }
+            });
         },
         watch: {
             getTitleSearch: function (newSearch, oldSearch) {
@@ -125,14 +143,26 @@
                                 this.orderBy
                             }${
                                 this.getFilter
+                            }&startIndex=${
+                                this.startIndex
                             }&maxResults=${
                                 this.maxResults
                             }`
                         )
                         .then(response => {
                             console.log(response.data.items)
-                            this.totalItems = response.data.totalItems
-                            this.books = response.data.items
+
+                            if (!this.infiniteLoading) {
+                                this.totalItems = response.data.totalItems
+                                this.books = response.data.items
+                            } else {
+                                response.data.items.forEach( book => {
+                                    this.books.push(book)
+                                })
+                                // this.books.concat(response.data.items)
+
+                                this.infiniteLoading = false
+                            }
                             this.loading = false
                         })
                         .catch(error => {
@@ -148,35 +178,6 @@
 </script>
 
 <style scoped lang="scss">
-    .list-enter, .list-leave-to {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-    .list-leave-active {
-        position: absolute;
-        /*z-index: 10;*/
-    }
-    .list-move {
-        transition: transform 0.5s;
-    }
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
-    }
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-        opacity: 0;
-    }
-
-    .fadeTop-enter-active {
-        transition: all .5s;
-    }
-    .fadeTop-leave-active {
-        transition: all .3s;
-    }
-    .fadeTop-enter, .fadeTop-leave-to /* .fade-leave-active below version 2.1.8 */ {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
     .grayFilter {
         filter: grayscale(100%);
     }
@@ -196,5 +197,38 @@
     .errorText {
         display: flex;
         align-items: center;
+    }
+
+    /*-----------------------*/
+    /* ---- transitions ---- */
+    /*-----------------------*/
+    .list-enter, .list-leave-to {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    .list-leave-active {
+        /*position: absolute;*/
+        /*z-index: 10;*/
+    }
+    .list-move {
+        transition: transform 0.5s;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    }
+
+    .fadeTop-enter-active {
+        transition: all .5s;
+    }
+    .fadeTop-leave-active {
+        transition: all .3s;
+    }
+    .fadeTop-enter, .fadeTop-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+        transform: translateY(-10px);
     }
 </style>

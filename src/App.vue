@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <ion-app>
+      <keep-alive>
       <ion-vue-router />
+      </keep-alive>
     </ion-app>
   </div>
 </template>

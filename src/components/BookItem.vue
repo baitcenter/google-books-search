@@ -31,7 +31,7 @@
                 } else {
                     return 'Unknown Author'
                 }
-            }
+            },
         },
         methods: {
             showBook() {
