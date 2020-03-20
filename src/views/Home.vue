@@ -43,7 +43,7 @@
                                    @input="titleSearch = $event.target.value"
                                    v-if="this.showTitleSearch"
                                    key="title"
-                                   class="transitionSearch">
+                                   class="searchBars">
                     </ion-searchbar>
                     <ion-searchbar animated position="start"
                                    :placeholder="'Author...'"
@@ -51,7 +51,7 @@
                                    @input="authorSearch = $event.target.value"
                                    v-if="this.showAuthorSearch"
                                    key="author"
-                                   class="transitionSearch">
+                                   class="searchBars">
                     </ion-searchbar>
                     <ion-searchbar animated position="start"
                                    :placeholder="'Global Search...'"
@@ -59,7 +59,7 @@
                                    @input="globalSearch = $event.target.value"
                                    v-if="this.showGlobalSearch"
                                    key="global"
-                                   class="transitionSearch">
+                                   class="searchBars">
                     </ion-searchbar>
                 </transition-group>
             </ion-toolbar>
@@ -198,8 +198,10 @@
     .filterContainer {
         padding-bottom: 5px;
     }
-    .transitionSearch {
+    .searchBars {
         transition: all 0.5s;
+        padding-bottom: 0 !important;
+        padding-top: 0 !important;
     }
 
     .list-enter, .list-leave-to {
