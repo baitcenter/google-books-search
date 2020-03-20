@@ -1,8 +1,10 @@
 <template>
     <ion-content fullscreen>
-        <div class="ion-text-center ion-margin-top" v-show="this.loading">
-            <ion-spinner color="dark"></ion-spinner>
-        </div>
+        <transition name="fadeTop">
+            <div class="ion-text-center ion-margin-vertical" v-show="this.loading">
+                <ion-spinner color="dark"></ion-spinner>
+            </div>
+        </transition>
         <ion-list class="booksContainer" scroll-y="true">
             <transition-group name="list" tag="div">
                 <BookItem v-for="(book, index) in this.books"
@@ -13,16 +15,21 @@
         </ion-list>
 
         <div class="booksIconContainer">
-            <ion-img class="booksIcon" :class="this.nothing && this.isSearching ? 'grayFilter' : ''"
-                     :src="require('@/assets/booksIcon.png')" v-if="this.nothing || !this.isSearching">
-            </ion-img>
-            <ion-text>
-                <h6>
-                    <ion-icon name="search"></ion-icon>
-                    No Result
-                </h6>
-            </ion-text>
+            <transition name="fade">
+                <ion-img class="booksIcon"
+                         :class="this.nothing && this.isSearching ? 'grayFilter' : ''"
+                         :src="require('@/assets/booksIcon.png')"
+                         v-if="this.nothing || !this.isSearching">
+                </ion-img>
+            </transition>
+            <transition name="fade">
+                <ion-text class="errorText" v-if="this.nothing && this.isSearching">
+                    <ion-icon name="search" class="grey"></ion-icon>
+                    <h6 class="ion-no-margin grey">No Result</h6>
+                </ion-text>
+            </transition>
         </div>
+
 
     </ion-content>
 </template>
@@ -39,6 +46,8 @@
             "globalSearch",
             "type",
             "lang",
+            "orderBy",
+            "filter"
         ],
         components: {
             BookItem
@@ -47,7 +56,6 @@
             return {
                 loading: false,
                 books: [],
-                orderBy: 'newest',
                 maxResults: '10',
                 totalItems: null
             }
@@ -56,6 +64,10 @@
             this.debouncedGetSearch = _.debounce(this.getBooks, 500)
         },
         mounted() {
+            this.$bus.$on('changeFilter', () => {
+                this.loading = true
+                this.getBooks()
+            })
         },
         watch: {
             getTitleSearch: function (newSearch, oldSearch) {
@@ -84,11 +96,8 @@
             getGlobalSearch() {
                 return this.globalSearch
             },
-            getType() {
-                return this.type
-            },
-            getLang() {
-                return this.lang
+            getFilter() {
+                return this.filter === 'all' ? '' : '&filter=' + this.filter
             },
             nothing() {
                 return this.totalItems <= 0;
@@ -109,11 +118,13 @@
                             }${
                                 this.getAuthorSearch ? '+inauthor:' + this.getAuthorSearch : ''
                             }&printType=${
-                                this.getType
+                                this.type
                             }&langRestrict=${
-                                this.getLang
+                                this.lang
                             }&orderBy=${
                                 this.orderBy
+                            }${
+                                this.getFilter
                             }&maxResults=${
                                 this.maxResults
                             }`
@@ -141,7 +152,6 @@
         opacity: 0;
         transform: translateX(-50px);
     }
-
     .list-leave-active {
         position: absolute;
         /*z-index: 10;*/
@@ -149,20 +159,45 @@
     .list-move {
         transition: transform 0.5s;
     }
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    }
+
+    .fadeTop-enter-active {
+        transition: all .5s;
+    }
+    .fadeTop-leave-active {
+        transition: all .3s;
+    }
+    .fadeTop-enter, .fadeTop-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
 
     .grayFilter {
         filter: grayscale(100%);
     }
     .booksIcon {
+        visibility: visible; // Prevent bug
     }
     .booksIconContainer {
         width: 40%;
         position: absolute;
-        top: 50%;
+        top: 55%;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
         flex-direction: column;
+        align-items: center;
+    }
+    .grey {
+        color: grey;
+    }
+    .errorText {
+        display: flex;
         align-items: center;
     }
 </style>

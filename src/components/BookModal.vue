@@ -45,11 +45,6 @@
 </template>
 
 <script>
-    import store from '../store';
-    import axios from 'axios'
-
-
-
     export default {
         name: 'BookModal',
         props: ["book"],
@@ -90,7 +85,7 @@
         /*--background: #a6a6a6;*/
     }
     .bookModalContent {
-        --background: #dfdfdf;
+        /*--background: #dfdfdf;*/
     }
     .thumbnailImg {
         margin-top: 5px;
@@ -104,7 +99,7 @@
         margin-left: -16px;
         margin-right: -16px;
         margin-top: -16px;
-        background-color: #323232;
+        background-color: #303030;
         display: flex;
         justify-content: center;
         align-items: center;

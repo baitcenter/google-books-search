@@ -1,5 +1,5 @@
 <template>
-    <ion-item :key="book.isbn" @click="showBook">
+    <ion-item @click="showBook" class="transitionBookItem">
         <ion-thumbnail slot="start" class="bookImg">
             <ion-img :src="book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.smallThumbnail : require('@/assets/NotAvailable.jpg')"></ion-img>
         </ion-thumbnail>
@@ -54,12 +54,8 @@
     .bookImg {
         height: 100%;
     }
-    .trashIcon {
-        width: 15px;
-        height: auto;
-    }
 
-    .transitionDiv {
+    .transitionBookItem {
         transition: all 0.5s;
     }
 </style>

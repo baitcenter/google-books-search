@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import '@/assets/css/custom-ionic.scss'
+
 
 import Ionic from '@ionic/vue';
 import '@ionic/core/css/ionic.bundle.css';

@@ -4,31 +4,68 @@
             <ion-toolbar>
                 <ion-buttons slot="start">
                     <ion-button class="ion-text-center">
-                        <img class="translateIcon" src="@/assets/translateDark.png"/>
+                        <img class="translateIcon" src="@/assets/translateDark.png" v-if="!darkMode"/>
+                        <img class="translateIcon" src="@/assets/translateIcon.png" v-else/>
                     </ion-button>
                 </ion-buttons>
                 <ion-title>Google Books</ion-title>
+                <ion-buttons slot="primary">
+                    <ion-icon slot="start" name="moon"></ion-icon>
+                    <ion-toggle id="themeToggle" slot="end"
+                                color="light"
+                                @ionChange="toggleDarkMode">
+                    </ion-toggle>
+                </ion-buttons>
             </ion-toolbar>
             <ion-toolbar class="ion-text-start">
-                <ion-searchbar animated position="start"
-                               :placeholder="'Title...'"
-                               v-bind:value="titleSearch"
-                               @input="titleSearch = $event.target.value">
-                </ion-searchbar>
-                <ion-searchbar animated position="start"
-                               :placeholder="'Author...'"
-                               v-bind:value="authorSearch"
-                               @input="authorSearch = $event.target.value">
-                </ion-searchbar>
-                <ion-searchbar animated position="start"
-                               :placeholder="'Global Search...'"
-                               v-bind:value="globalSearch"
-                               @input="globalSearch = $event.target.value">
-                </ion-searchbar>
+                <ion-text>
+                    <p class="ion-no-margin">
+                        <ion-chip color="primary" class="chip" :outline="showTitleSearch" @click="toggleTitleSearch">
+                            <ion-label>Title</ion-label>
+                            <ion-icon :name="!showTitleSearch ? 'add-circle' : 'close-circle'"></ion-icon>
+                        </ion-chip>
+                        <ion-chip color="secondary" class="chip" :outline="showAuthorSearch"
+                                  @click="toggleAuthorSearch">
+                            <ion-label>Author</ion-label>
+                            <ion-icon :name="!showAuthorSearch ? 'add-circle' : 'close-circle'"></ion-icon>
+                        </ion-chip>
+                        <ion-chip color="tertiary" class="chip" :outline="showGlobalSearch" @click="toggleGlobalSearch">
+                            <ion-label>Global</ion-label>
+                            <ion-icon :name="!showGlobalSearch ? 'add-circle' : 'close-circle'"></ion-icon>
+                        </ion-chip>
+                    </p>
+                </ion-text>
+
+                <transition-group name="list" tag="div">
+                    <ion-searchbar animated position="start"
+                                   :placeholder="'Title...'"
+                                   v-bind:value="titleSearch"
+                                   @input="titleSearch = $event.target.value"
+                                   v-if="this.showTitleSearch"
+                                   key="title"
+                                   class="transitionSearch">
+                    </ion-searchbar>
+                    <ion-searchbar animated position="start"
+                                   :placeholder="'Author...'"
+                                   v-bind:value="authorSearch"
+                                   @input="authorSearch = $event.target.value"
+                                   v-if="this.showAuthorSearch"
+                                   key="author"
+                                   class="transitionSearch">
+                    </ion-searchbar>
+                    <ion-searchbar animated position="start"
+                                   :placeholder="'Global Search...'"
+                                   v-bind:value="globalSearch"
+                                   @input="globalSearch = $event.target.value"
+                                   v-if="this.showGlobalSearch"
+                                   key="global"
+                                   class="transitionSearch">
+                    </ion-searchbar>
+                </transition-group>
             </ion-toolbar>
 
             <ion-toolbar>
-                <ion-segment color="dark" :value="type" @ionChange="type = $event.target.value">
+                <ion-segment color="primary" :value="type" @ionChange="type = $event.target.value">
                     <ion-segment-button value="all" layout="icon-start">
                         <ion-label>All</ion-label>
                         <ion-icon name="apps"></ion-icon>
@@ -45,7 +82,38 @@
             </ion-toolbar>
 
             <ion-toolbar>
-                <ion-title>{{type}}</ion-title>
+                <ion-segment color="success" :value="orderBy" @ionChange="orderBy = $event.target.value">
+                    <ion-segment-button value="newest" layout="icon-start">
+                        <ion-label>Newest</ion-label>
+                        <ion-icon name="pizza"></ion-icon>
+                    </ion-segment-button>
+                    <ion-segment-button value="relevance" layout="icon-start">
+                        <ion-label>Relevance</ion-label>
+                        <ion-icon name="git-compare"></ion-icon>
+                    </ion-segment-button>
+                </ion-segment>
+            </ion-toolbar>
+
+            <ion-toolbar class="filterContainer">
+                <ion-segment scrollable color="secondary"
+                             :value="filter" @ionChange="filter = $event.target.value">
+                    <ion-segment-button value="all" layout="icon-start">
+                        <ion-label>All</ion-label>
+                        <ion-icon name="apps"></ion-icon>
+                    </ion-segment-button>
+                    <ion-segment-button value="partial" layout="icon-start">
+                        <ion-label>Partial</ion-label>
+                        <ion-icon name="bookmark"></ion-icon>
+                    </ion-segment-button>
+                    <ion-segment-button value="full" layout="icon-start">
+                        <ion-label>Full</ion-label>
+                        <ion-icon name="bookmarks"></ion-icon>
+                    </ion-segment-button>
+                    <ion-segment-button value="ebooks" layout="icon-start">
+                        <ion-label>E-Books</ion-label>
+                        <ion-icon name="tv"></ion-icon>
+                    </ion-segment-button>
+                </ion-segment>
             </ion-toolbar>
 
         </ion-header>
@@ -54,7 +122,9 @@
                      :authorSearch="authorSearch"
                      :globalSearch="globalSearch"
                      :type="type"
-                     :lang="lang">
+                     :lang="lang"
+                     :orderBy="orderBy"
+                     :filter="filter">
         </TheBookList>
     </div>
 </template>
@@ -73,13 +143,50 @@
                 titleSearch: '',
                 authorSearch: '',
                 globalSearch: '',
-                type: 'books',
-                lang: 'fr'
+                type: 'all',
+                lang: 'fr',
+                orderBy: 'newest',
+                filter: 'all',
+
+                showTitleSearch: true,
+                showAuthorSearch: false,
+                showGlobalSearch: false,
+                darkMode: false
             }
         },
-        computed: {
+        watch: {
+            type() {
+                this.$bus.$emit('changeFilter')
+            },
+            lang() {
+                this.$bus.$emit('changeFilter')
+            },
+            orderBy() {
+                this.$bus.$emit('changeFilter')
+            },
+            filter() {
+                this.$bus.$emit('changeFilter')
+            }
         },
-        methods: {},
+        computed: {},
+        methods: {
+            toggleDarkMode(ev) {
+                this.darkMode = ev.detail.checked
+                document.body.classList.toggle('dark', ev.detail.checked)
+            },
+            toggleTitleSearch() {
+                this.titleSearch = ''
+                this.showTitleSearch = !this.showTitleSearch
+            },
+            toggleAuthorSearch() {
+                this.authorSearch = ''
+                this.showAuthorSearch = !this.showAuthorSearch
+            },
+            toggleGlobalSearch() {
+                this.globalSearch = ''
+                this.showGlobalSearch = !this.showGlobalSearch
+            }
+        },
     }
 </script>
 
@@ -87,5 +194,23 @@
     .translateIcon {
         width: 25px;
         height: auto;
+    }
+    .filterContainer {
+        padding-bottom: 5px;
+    }
+    .transitionSearch {
+        transition: all 0.5s;
+    }
+
+    .list-enter, .list-leave-to {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    .list-leave-active {
+      /*position: absolute;*/
+      /*z-index: 10;*/
+    }
+    .list-move {
+      transition: transform 0.5s;
     }
 </style>
