@@ -149,3 +149,8 @@ body.dark {
 ion-item {
   //--transition: none;
 }
+ion-popover {
+  ion-list {
+    margin-bottom: 0 !important;
+  }
+}

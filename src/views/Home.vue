@@ -2,12 +2,28 @@
     <div class="ion-page">
         <ion-header>
             <ion-toolbar>
-                <ion-buttons slot="start">
+                <ion-buttons slot="start" @click="$refs.selectLang.open()">
                     <ion-button class="ion-text-center">
                         <img class="translateIcon" src="@/assets/translateDark.png" v-if="!darkMode"/>
                         <img class="translateIcon" src="@/assets/translateIcon.png" v-else/>
                     </ion-button>
                 </ion-buttons>
+
+                <ion-select interface="popover" slot="start"
+                            :value="lang"
+                            @ionChange="lang = $event.target.value"
+                            ref="selectLang"
+                            class="selectLang">
+                    <ion-select-option value="en">En</ion-select-option>
+                    <ion-select-option value="fr">Fr</ion-select-option>
+                    <ion-select-option value="es">Es</ion-select-option>
+                    <ion-select-option value="de">De</ion-select-option>
+                    <ion-select-option value="ar">Ar</ion-select-option>
+                    <ion-select-option value="zh">Zh</ion-select-option>
+                    <ion-select-option value="ja">Ja</ion-select-option>
+                    <ion-select-option value="ru">Ru</ion-select-option>
+                </ion-select>
+
                 <ion-title>Google Books</ion-title>
                 <ion-buttons slot="primary">
                     <ion-icon slot="start" name="moon"></ion-icon>
@@ -136,7 +152,6 @@
     import TheBookList from '@/components/TheBookList.vue'
 
     export default {
-
         name: 'Home',
         components: {
             TheBookList,
@@ -206,6 +221,11 @@
         padding-bottom: 0 !important;
         padding-top: 0 !important;
     }
+    .selectLang {
+        --padding-start: 0;
+    }
+
+
 
     .list-enter, .list-leave-to {
       opacity: 0;

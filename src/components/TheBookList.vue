@@ -1,5 +1,8 @@
 <template>
-    <ion-content fullscreen>
+    <ion-content fullscreen ref="theBookList">
+        <ion-text>
+            <h6>{{this.totalItems}}</h6>
+        </ion-text>
         <transition name="fadeTop">
             <div class="ion-text-center ion-margin-vertical" v-show="this.loading">
                 <ion-spinner color="dark"></ion-spinner>
@@ -14,7 +17,7 @@
             </transition-group>
         </ion-list>
 
-        <ion-infinite-scroll threshold="100px" ref="infiniteScroll">
+        <ion-infinite-scroll threshold="100px" ref="infiniteScroll" v-show="this.books.length > 0">
             <ion-infinite-scroll-content
                     loading-spinner="bubbles"
                     loading-text="Loading more data...">
@@ -86,7 +89,7 @@
                     if (this.startIndex + this.maxResults >= this.totalItems) {
                         event.target.disabled = true
                     }
-                }, 600)
+                }, 500)
             })
         },
         watch: {
@@ -128,6 +131,11 @@
         },
         methods: {
             getBooks() {
+                if (!this.infiniteLoading) {
+                    this.$refs.theBookList.scrollToTop(200)
+                    this.startIndex = 0
+                }
+
                 if (this.getTitleSearch.length > 0 || this.getAuthorSearch.length > 0 || this.getGlobalSearch.length > 0) {
                     axios
                         .get(
