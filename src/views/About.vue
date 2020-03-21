@@ -12,6 +12,10 @@
         </ion-header>
         <ion-content class="ion-padding">
 <!--            "http://books.google.fr/books?id=j7rLDwAAQBAJ&printsec=frontcover&dq=intitle:c&hl=&as_pt=ALLTYPES&cd=1&source=gbs_api"-->
+
+
+            <ion-button expand="block" @click="displayViewer">A block button</ion-button>
+
             <div id="viewerCanvas" style="width: 100%; height: 100%;"></div>
         </ion-content>
     </div>
@@ -28,39 +32,29 @@
             }
         },
         beforeCreate() {
-            let viewerApi = document.createElement('script')
-            viewerApi.setAttribute('src', 'https://www.google.com/books/jsapi.js')
-            document.head.appendChild(viewerApi)
-
-
-
-
+            // let viewerApi = document.createElement('script')
+            // viewerApi.setAttribute('src', 'https://www.google.com/books/jsapi.js')
+            // document.head.appendChild(viewerApi)
+            window.google.books.load({"language": "fr"})
         },
-        beforeMount() {
-            google.books.load({"language": "fr"})
-
-            google.books.setOnLoadCallback(() => {
-                console.log('init')
-                let viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
-                viewer.load('ISBN:0738531367');
-            })
+        created() {
         },
         mounted() {
-            // this.displayViewer()
+            setTimeout(() => {
+                this.displayViewer()
+            }, 500)
+
+            window.google.books.setOnLoadCallback(this.displayViewer)
         },
         watch: {
-
         },
         computed: {},
         methods: {
             displayViewer() {
-                google.books.load({"language": "fr"})
-
-                google.books.setOnLoadCallback(() => {
-                    console.log('init')
-                    let viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
-                    viewer.load('ISBN:0738531367');
-                })
+                console.log(google)
+                console.log('init')
+                let viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
+                viewer.load('ISBN:0738531367');
             }
         },
     }

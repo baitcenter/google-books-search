@@ -18,19 +18,14 @@ let router = new IonicVueRouter({
     {
       path: '/about',
       name: 'about',
-      // component: () =>
-      //     import(/* webpackChunkName: "about" */ '@/views/About.vue'),
-      component: About,
-
-      beforeEnter: (to, from, next) => {
-        next()
-      },
+      component: () =>
+          import(/* webpackChunkName: "about" */ '@/views/About.vue'),
+      // component: About,
     }
   ]
 });
 export default router
 
 router.beforeEach( (to, from, next) => {
-  // google.books.load({"language": "fr"})
   next()
 })

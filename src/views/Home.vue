@@ -60,6 +60,7 @@
 
         </ion-header>
 
+        <keep-alive>
         <TheBookList :titleSearch="titleSearch"
                      :authorSearch="authorSearch"
                      :globalSearch="globalSearch"
@@ -68,6 +69,7 @@
                      :orderBy="orderBy"
                      :filter="filter">
         </TheBookList>
+        </keep-alive>
     </div>
 </template>
 

@@ -44,11 +44,17 @@
                     <p class="mt-0">{{book.volumeInfo.description ? book.volumeInfo.description : 'Doesn\'t have Description...'}}</p>
                 </ion-text>
             </div>
+
+
+<!--            <ion-button expand="block" @click="showDetail">A block button</ion-button>-->
         </ion-content>
     </div>
 </template>
 
 <script>
+    import router from '../router';
+
+
     export default {
         name: 'BookModal',
         props: ["book"],
@@ -79,6 +85,9 @@
         methods: {
             dismissModal() {
                 this.$ionic.modalController.dismiss()
+            },
+            showDetail(title) {
+                router.push('about');
             },
         }
     }
