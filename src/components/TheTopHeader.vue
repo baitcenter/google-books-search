@@ -40,7 +40,6 @@
             return {
                 darkMode: false,
                 lang: 'fr',
-
             }
         },
         mounted() {

@@ -162,18 +162,20 @@
                             }`
                         )
                         .then(response => {
-                            console.log(response.data.items)
-
-                            if (!this.infiniteLoading) {
-                                this.totalItems = response.data.totalItems
-                                this.books = response.data.items
+                            if (response.data.items) {
+                                if (!this.infiniteLoading) {
+                                    this.totalItems = response.data.totalItems
+                                    this.books = response.data.items
+                                } else {
+                                    response.data.items.forEach( book => {
+                                        this.books.push(book)
+                                    })
+                                    this.$refs.infiniteScroll.complete()
+                                    this.infiniteLoading = false
+                                }
                             } else {
-                                response.data.items.forEach( book => {
-                                    this.books.push(book)
-                                })
-                                // this.books.concat(response.data.items)
-                                this.$refs.infiniteScroll.complete()
-                                this.infiniteLoading = false
+                                this.totalItems = response.data.totalItems ? response.data.totalItems : null
+                                this.books = []
                             }
                             this.loading = false
                         })
