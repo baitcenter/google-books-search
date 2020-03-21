@@ -1,5 +1,14 @@
 <template>
     <ion-content fullscreen ref="theBookList">
+        <ion-list>
+            <ion-item button @click="showDetail()">
+                <ion-label>
+                    <h3>Merguez</h3>
+                </ion-label>
+            </ion-item>
+        </ion-list>
+
+
         <ion-text>
             <h6>{{this.totalItems}}</h6>
         </ion-text>
@@ -132,6 +141,10 @@
             }
         },
         methods: {
+            showDetail(title) {
+                this.$router.push('about');
+            },
+
             getBooks() {
                 if (!this.infiniteLoading) {
                     this.$refs.theBookList.scrollToTop(200)

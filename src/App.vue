@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <ion-app>
-      <keep-alive>
+<!--      <keep-alive>-->
       <ion-vue-router />
-      </keep-alive>
+<!--      </keep-alive>-->
     </ion-app>
   </div>
 </template>
