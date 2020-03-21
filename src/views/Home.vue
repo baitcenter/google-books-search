@@ -1,87 +1,10 @@
 <template>
     <div class="ion-page">
         <ion-header>
-            <ion-toolbar>
-                <ion-buttons slot="start" @click="$refs.selectLang.open()">
-                    <ion-button class="ion-text-center">
-                        <img class="translateIcon" src="@/assets/translateDark.png" v-if="!darkMode"/>
-                        <img class="translateIcon" src="@/assets/translateIcon.png" v-else/>
-                    </ion-button>
-                </ion-buttons>
 
-                <ion-select interface="popover" slot="start"
-                            :value="lang"
-                            @ionChange="lang = $event.target.value"
-                            ref="selectLang"
-                            class="selectLang">
-                    <ion-select-option value="en">En</ion-select-option>
-                    <ion-select-option value="fr">Fr</ion-select-option>
-                    <ion-select-option value="es">Es</ion-select-option>
-                    <ion-select-option value="de">De</ion-select-option>
-                    <ion-select-option value="ar">Ar</ion-select-option>
-                    <ion-select-option value="zh">Zh</ion-select-option>
-                    <ion-select-option value="ja">Ja</ion-select-option>
-                    <ion-select-option value="ru">Ru</ion-select-option>
-                </ion-select>
+            <TheTopHeader></TheTopHeader>
 
-                <ion-title>Google Books</ion-title>
-                <ion-buttons slot="primary">
-                    <ion-icon slot="start" name="moon"></ion-icon>
-                    <ion-toggle id="themeToggle" slot="end"
-                                color="light"
-                                @ionChange="toggleDarkMode">
-                    </ion-toggle>
-                </ion-buttons>
-            </ion-toolbar>
-            <ion-toolbar class="ion-text-start">
-                <ion-text>
-                    <p class="ion-no-margin">
-                        <ion-chip color="primary" class="chip" :outline="showTitleSearch" @click="toggleTitleSearch">
-                            <ion-label>Title</ion-label>
-                            <ion-icon :name="!showTitleSearch ? 'add-circle' : 'close-circle'"></ion-icon>
-                        </ion-chip>
-                        <ion-chip color="secondary" class="chip" :outline="showAuthorSearch"
-                                  @click="toggleAuthorSearch">
-                            <ion-label>Author</ion-label>
-                            <ion-icon :name="!showAuthorSearch ? 'add-circle' : 'close-circle'"></ion-icon>
-                        </ion-chip>
-                        <ion-chip color="tertiary" class="chip" :outline="showGlobalSearch" @click="toggleGlobalSearch">
-                            <ion-label>Global</ion-label>
-                            <ion-icon :name="!showGlobalSearch ? 'add-circle' : 'close-circle'"></ion-icon>
-                        </ion-chip>
-                    </p>
-                </ion-text>
-
-                <transition-group name="list" tag="div">
-                    <ion-searchbar animated position="start"
-                                   :placeholder="'Title...'"
-                                   v-bind:value="titleSearch"
-                                   @input="titleSearch = $event.target.value"
-                                   @ionClear="titleSearch = ''"
-                                   v-if="this.showTitleSearch"
-                                   key="title"
-                                   class="searchBars">
-                    </ion-searchbar>
-                    <ion-searchbar animated position="start"
-                                   :placeholder="'Author...'"
-                                   v-bind:value="authorSearch"
-                                   @input="authorSearch = $event.target.value"
-                                   @ionClear="authorSearch = ''"
-                                   v-if="this.showAuthorSearch"
-                                   key="author"
-                                   class="searchBars">
-                    </ion-searchbar>
-                    <ion-searchbar animated position="start"
-                                   :placeholder="'Global Search...'"
-                                   v-bind:value="globalSearch"
-                                   @input="globalSearch = $event.target.value"
-                                   @ionClear="globalSearch = ''"
-                                   v-if="this.showGlobalSearch"
-                                   key="global"
-                                   class="searchBars">
-                    </ion-searchbar>
-                </transition-group>
-            </ion-toolbar>
+            <SearchBars></SearchBars>
 
             <ion-toolbar>
                 <ion-segment color="primary" :value="type" @ionChange="type = $event.target.value">
@@ -150,11 +73,15 @@
 
 <script>
     import TheBookList from '@/components/TheBookList.vue'
+    import TheTopHeader from '@/components/TheTopHeader.vue'
+    import SearchBars from '@/components/SearchBars.vue'
 
     export default {
         name: 'Home',
         components: {
             TheBookList,
+            TheTopHeader,
+            SearchBars
         },
         data() {
             return {
@@ -165,12 +92,21 @@
                 lang: 'fr',
                 orderBy: 'newest',
                 filter: 'all',
-
-                showTitleSearch: true,
-                showAuthorSearch: false,
-                showGlobalSearch: false,
-                darkMode: false
             }
+        },
+        mounted() {
+            this.$bus.$on('changeLang', (newLang) => {
+                this.lang = newLang
+            })
+            this.$bus.$on('changeTitleSearch', (newSearch) => {
+                this.titleSearch = newSearch
+            })
+            this.$bus.$on('changeAuthorSearch', (newSearch) => {
+                this.authorSearch = newSearch
+            })
+            this.$bus.$on('changeGlobalSearch', (newSearch) => {
+                this.globalSearch = newSearch
+            })
         },
         watch: {
             type() {
@@ -188,22 +124,6 @@
         },
         computed: {},
         methods: {
-            toggleDarkMode(ev) {
-                this.darkMode = ev.detail.checked
-                document.body.classList.toggle('dark', ev.detail.checked)
-            },
-            toggleTitleSearch() {
-                this.titleSearch = ''
-                this.showTitleSearch = !this.showTitleSearch
-            },
-            toggleAuthorSearch() {
-                this.authorSearch = ''
-                this.showAuthorSearch = !this.showAuthorSearch
-            },
-            toggleGlobalSearch() {
-                this.globalSearch = ''
-                this.showGlobalSearch = !this.showGlobalSearch
-            }
         },
     }
 </script>

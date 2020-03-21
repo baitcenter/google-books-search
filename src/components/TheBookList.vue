@@ -48,7 +48,7 @@
     import BookItem from '@/components/BookItem.vue'
 
     export default {
-        name: 'books',
+        name: 'TheBookList',
         props: ["titleSearch",
             "authorSearch",
             "globalSearch",
@@ -76,7 +76,9 @@
         mounted() {
             this.$bus.$on('changeFilter', () => {
                 this.loading = true
-                this.getBooks()
+                this.$nextTick(function () {
+                    this.getBooks()
+                })
             })
 
             this.$refs.infiniteScroll.addEventListener("ionInfinite", event => {
