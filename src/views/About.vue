@@ -35,7 +35,7 @@
             // let viewerApi = document.createElement('script')
             // viewerApi.setAttribute('src', 'https://www.google.com/books/jsapi.js')
             // document.head.appendChild(viewerApi)
-            window.google.books.load({"language": "fr"})
+            window.google.books.load({"language": "en"})
         },
         created() {
         },
@@ -44,7 +44,7 @@
                 this.displayViewer()
             }, 500)
 
-            window.google.books.setOnLoadCallback(this.displayViewer)
+            // window.google.books.setOnLoadCallback(this.displayViewer)
         },
         watch: {
         },

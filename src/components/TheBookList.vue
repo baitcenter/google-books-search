@@ -1,16 +1,15 @@
 <template>
     <ion-content fullscreen ref="theBookList">
-
-        <ion-button expand="block" @click="showDetail">A block button</ion-button>
-
-        <ion-text>
-            <h6>{{this.totalItems}}</h6>
+        <ion-text  class="ion-text-end" color="medium">
+            <p class="nbResults">{{this.totalItems}} Résultats</p>
         </ion-text>
+
         <transition name="fadeTop">
             <div class="ion-text-center ion-margin-vertical" v-show="this.loading">
                 <ion-spinner color="dark"></ion-spinner>
             </div>
         </transition>
+
         <ion-list class="booksContainer" scroll-y="true">
             <transition-group name="list" tag="div">
                 <BookItem v-for="(book, index) in this.books"
@@ -129,9 +128,6 @@
             }
         },
         methods: {
-            showDetail(title) {
-                this.$router.push('about');
-            },
             getBooks() {
                 if (!this.infiniteLoading && this.$refs.theBookList) {
                     this.$refs.theBookList.scrollToTop(200)
@@ -211,6 +207,9 @@
     .errorText {
         display: flex;
         align-items: center;
+    }
+    .nbResults {
+        margin: 0 5px;
     }
 
     /*-----------------------*/

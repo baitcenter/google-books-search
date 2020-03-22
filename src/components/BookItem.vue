@@ -1,13 +1,16 @@
 <template>
-    <ion-item @click="showBook" class="transitionBookItem">
+    <ion-item @click="goToBook" class="transitionBookItem">
         <ion-thumbnail slot="start" class="bookImg">
             <ion-img :src="book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.smallThumbnail : require('@/assets/NotAvailable.jpg')"></ion-img>
         </ion-thumbnail>
-        <ion-label>
+        <ion-label class="labels">
             <h2>{{book.volumeInfo.title}}</h2>
             <h3>{{getAuthors}}</h3>
             <p>{{book.volumeInfo.description ? book.volumeInfo.description : 'No description'}}</p>
-            <p>{{book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 'Unknown '}} pages</p>
+            <div class="pagesQuick">
+                <p>{{book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 'Unknown '}} pages</p>
+                <ion-button class="ion-no-margin" @click.stop="showQuickView">Quick View</ion-button>
+            </div>
         </ion-label>
     </ion-item>
 </template>
@@ -34,7 +37,10 @@
             },
         },
         methods: {
-            showBook() {
+            goToBook() {
+                this.$router.push('about');
+            },
+            showQuickView() {
                 return this.$ionic.modalController
                     .create({
                         component: BookModal,
@@ -50,9 +56,17 @@
         }
     }
 </script>
-<style>
+<style lang="scss">
     .bookImg {
         height: 100%;
+    }
+    .labels {
+        margin-bottom: 5px;
+    }
+    .pagesQuick {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
     }
 
     .transitionBookItem {
