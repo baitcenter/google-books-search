@@ -58,12 +58,18 @@
                 titleSearch: '',
                 authorSearch: '',
                 globalSearch: '',
-                showTitleSearch: true,
+                showTitleSearch: false,
                 showAuthorSearch: false,
                 showGlobalSearch: false,
             }
         },
         mounted() {
+            this.titleSearch = this.getTitleSearch
+            this.authorSearch = this.getAuthorSearch
+            this.globalSearch = this.getGlobalSearch
+            this.showTitleSearch = this.getShowTitleSearch
+            this.showAuthorSearch = this.getShowAuthorSearch
+            this.showGlobalSearch = this.getShowGlobalSearch
         },
         watch: {
             titleSearch(val) {
@@ -74,6 +80,35 @@
             },
             globalSearch(val) {
                 this.$store.commit('changeGlobalSearch', val)
+            },
+            showTitleSearch(val) {
+                this.$store.commit('changeShowTitleSearch', val)
+            },
+            showAuthorSearch(val) {
+                this.$store.commit('changeShowAuthorSearch', val)
+            },
+            showGlobalSearch(val) {
+                this.$store.commit('changeShowGlobalSearch', val)
+            },
+        },
+        computed: {
+            getTitleSearch () {
+                return this.$store.state.titleSearch
+            },
+            getAuthorSearch() {
+                return this.$store.state.authorSearch
+            },
+            getGlobalSearch() {
+                return this.$store.state.globalSearch
+            },
+            getShowTitleSearch () {
+                return this.$store.state.showTitleSearch
+            },
+            getShowAuthorSearch() {
+                return this.$store.state.showAuthorSearch
+            },
+            getShowGlobalSearch() {
+                return this.$store.state.showGlobalSearch
             },
         },
         methods: {
@@ -93,6 +128,22 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    .searchBars {
+        transition: all 0.5s;
+        padding-bottom: 0 !important;
+        padding-top: 0 !important;
+    }
 
+    .list-enter, .list-leave-to {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    .list-leave-active {
+        /*position: absolute;*/
+        /*z-index: 10;*/
+    }
+    .list-move {
+        transition: transform 0.5s;
+    }
 </style>

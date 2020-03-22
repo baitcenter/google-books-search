@@ -65,6 +65,12 @@
     }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+    .translateIcon {
+        width: 25px;
+        height: auto;
+    }
+    .selectLang {
+        --padding-start: 0;
+    }
 </style>

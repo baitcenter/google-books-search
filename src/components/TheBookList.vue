@@ -53,9 +53,6 @@
     export default {
         name: 'TheBookList',
         props: [
-            "type",
-            "orderBy",
-            "filter",
         ],
         components: {
             BookItem
@@ -122,7 +119,7 @@
                 return this.$store.state.globalSearch
             },
             getFilter() {
-                return this.filter === 'all' ? '' : '&filter=' + this.filter
+                return this.$store.state.filter === 'all' ? '' : '&filter=' + this.$store.state.filter
             },
             nothing() {
                 return this.totalItems <= 0;
@@ -136,7 +133,7 @@
                 this.$router.push('about');
             },
             getBooks() {
-                if (!this.infiniteLoading) {
+                if (!this.infiniteLoading && this.$refs.theBookList) {
                     this.$refs.theBookList.scrollToTop(200)
                     this.startIndex = 0
                 }
@@ -151,11 +148,11 @@
                             }${
                                 this.getAuthorSearch ? '+inauthor:' + this.getAuthorSearch : ''
                             }&printType=${
-                                this.type
+                                this.$store.state.type
                             }&langRestrict=${
                                 this.$store.state.lang
                             }&orderBy=${
-                                this.orderBy
+                                this.$store.state.orderBy
                             }${
                                 this.getFilter
                             }&startIndex=${

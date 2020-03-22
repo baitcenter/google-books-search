@@ -18,6 +18,9 @@ export default new Vuex.Store({
         titleSearch: '',
         authorSearch: '',
         globalSearch: '',
+        showTitleSearch: true,
+        showAuthorSearch: false,
+        showGlobalSearch: false,
     },
     mutations: {
         changeType(state, newType) {
@@ -52,6 +55,15 @@ export default new Vuex.Store({
         },
         changeGlobalSearch(state, newGlobalSearch) {
             state.globalSearch = newGlobalSearch
+        },
+        changeShowTitleSearch(state, newShowTitleSearch) {
+            state.showTitleSearch = newShowTitleSearch
+        },
+        changeShowAuthorSearch(state, newShowAuthorSearch) {
+            state.showAuthorSearch = newShowAuthorSearch
+        },
+        changeShowGlobalSearch(state, newShowGlobalSearch) {
+            state.showGlobalSearch = newShowGlobalSearch
         },
     },
     actions: {},
