@@ -199,7 +199,7 @@
     .booksIconContainer {
         width: 40%;
         position: absolute;
-        top: 55%;
+        top: 50%;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
