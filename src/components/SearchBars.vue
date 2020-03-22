@@ -67,13 +67,13 @@
         },
         watch: {
             titleSearch(val) {
-                this.$bus.$emit('changeTitleSearch', val)
+                this.$store.commit('changeTitleSearch', val)
             },
             authorSearch(val) {
-                this.$bus.$emit('changeAuthorSearch', val)
+                this.$store.commit('changeAuthorSearch', val)
             },
             globalSearch(val) {
-                this.$bus.$emit('changeGlobalSearch', val)
+                this.$store.commit('changeGlobalSearch', val)
             },
         },
         methods: {

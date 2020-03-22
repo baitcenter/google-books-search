@@ -1,7 +1,7 @@
 <template>
     <ion-content fullscreen ref="theBookList">
 
-                    <ion-button expand="block" @click="showDetail">A block button</ion-button>
+        <ion-button expand="block" @click="showDetail">A block button</ion-button>
 
         <ion-text>
             <h6>{{this.totalItems}}</h6>
@@ -52,11 +52,8 @@
 
     export default {
         name: 'TheBookList',
-        props: ["titleSearch",
-            "authorSearch",
-            "globalSearch",
+        props: [
             "type",
-            "lang",
             "orderBy",
             "filter",
         ],
@@ -116,13 +113,13 @@
         },
         computed: {
             getTitleSearch () {
-                return this.titleSearch
+                return this.$store.state.titleSearch
             },
             getAuthorSearch() {
-                return this.authorSearch
+                return this.$store.state.authorSearch
             },
             getGlobalSearch() {
-                return this.globalSearch
+                return this.$store.state.globalSearch
             },
             getFilter() {
                 return this.filter === 'all' ? '' : '&filter=' + this.filter
@@ -156,7 +153,7 @@
                             }&printType=${
                                 this.type
                             }&langRestrict=${
-                                this.lang
+                                this.$store.state.lang
                             }&orderBy=${
                                 this.orderBy
                             }${

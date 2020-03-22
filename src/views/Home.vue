@@ -61,11 +61,7 @@
         </ion-header>
 
         <keep-alive>
-        <TheBookList :titleSearch="titleSearch"
-                     :authorSearch="authorSearch"
-                     :globalSearch="globalSearch"
-                     :type="type"
-                     :lang="lang"
+        <TheBookList :type="type"
                      :orderBy="orderBy"
                      :filter="filter">
         </TheBookList>
@@ -87,40 +83,28 @@
         },
         data() {
             return {
-                titleSearch: '',
-                authorSearch: '',
-                globalSearch: '',
                 type: 'all',
-                lang: 'fr',
                 orderBy: 'newest',
                 filter: 'all',
             }
         },
         mounted() {
-            this.$bus.$on('changeLang', (newLang) => {
-                this.lang = newLang
-            })
-            this.$bus.$on('changeTitleSearch', (newSearch) => {
-                this.titleSearch = newSearch
-            })
-            this.$bus.$on('changeAuthorSearch', (newSearch) => {
-                this.authorSearch = newSearch
-            })
-            this.$bus.$on('changeGlobalSearch', (newSearch) => {
-                this.globalSearch = newSearch
-            })
         },
         watch: {
-            type() {
+            type(val) {
+                this.$store.commit('changeType', val)
                 this.$bus.$emit('changeFilter')
             },
-            lang() {
+            lang(val) {
+                this.$store.commit('changeLang', val)
                 this.$bus.$emit('changeFilter')
             },
-            orderBy() {
+            orderBy(val) {
+                this.$store.commit('changeOrderBy', val)
                 this.$bus.$emit('changeFilter')
             },
-            filter() {
+            filter(val) {
+                this.$store.commit('changeFilter', val)
                 this.$bus.$emit('changeFilter')
             }
         },

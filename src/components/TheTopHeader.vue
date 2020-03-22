@@ -39,15 +39,22 @@
         data () {
             return {
                 darkMode: false,
-                lang: 'fr',
+                lang: '',
             }
         },
         mounted() {
+            this.lang = this.getLang
         },
         watch: {
             lang(val) {
-                this.$bus.$emit('changeLang', val)
+                this.$store.commit('changeLang', val)
+                this.$bus.$emit('changeFilter')
             }
+        },
+        computed: {
+            getLang() {
+                return this.$store.state.lang
+            },
         },
         methods: {
             toggleDarkMode(ev) {
