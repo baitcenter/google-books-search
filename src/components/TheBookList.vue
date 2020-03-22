@@ -1,8 +1,10 @@
 <template>
     <ion-content fullscreen ref="theBookList">
-        <ion-text  class="ion-text-end" color="medium">
-            <p class="nbResults">{{this.totalItems}} Résultats</p>
-        </ion-text>
+        <transition name="fade">
+            <ion-text  class="ion-text-start" color="medium" v-if="this.totalItems">
+                <p class="nbResults">{{this.totalItems}} Résultats</p>
+            </ion-text>
+        </transition>
 
         <transition name="fadeTop">
             <div class="ion-text-center ion-margin-vertical" v-show="this.loading">

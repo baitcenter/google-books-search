@@ -9,7 +9,7 @@
             <p>{{book.volumeInfo.description ? book.volumeInfo.description : 'No description'}}</p>
             <div class="pagesQuick">
                 <p>{{book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 'Unknown '}} pages</p>
-                <ion-button class="ion-no-margin" @click.stop="showQuickView">Quick View</ion-button>
+                <ion-button class="ion-no-margin" fill="clear" @click.stop="showQuickView">Quick View</ion-button>
             </div>
         </ion-label>
     </ion-item>
@@ -38,7 +38,7 @@
         },
         methods: {
             goToBook() {
-                this.$router.push('about');
+                this.$router.push({ name: 'book', params: { bookId: this.book.id }});
             },
             showQuickView() {
                 return this.$ionic.modalController
@@ -65,7 +65,7 @@
     }
     .pagesQuick {
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: space-between;
     }
 

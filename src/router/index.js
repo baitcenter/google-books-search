@@ -16,6 +16,14 @@ let router = new IonicVueRouter({
       component: Home
     },
     {
+      path: '/:bookId',
+      props: true,
+      name: 'book',
+      component: () =>
+          import(/* webpackChunkName: "about" */ '@/views/Book.vue'),
+      // component: About,
+    },
+    {
       path: '/about',
       name: 'about',
       component: () =>

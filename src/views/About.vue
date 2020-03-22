@@ -7,7 +7,7 @@
                         <ion-back-button></ion-back-button>
                     </ion-buttons>
                 </ion-nav-link>
-                <ion-title>About</ion-title>
+                <ion-title>{{this.$route.params.bookId}}</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
@@ -23,7 +23,7 @@
 
 <script>
     export default {
-        name: 'Home',
+        name: 'About',
         components: {
 
         },

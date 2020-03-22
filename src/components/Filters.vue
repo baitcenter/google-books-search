@@ -1,7 +1,9 @@
 <template>
     <div class="filters">
         <ion-toolbar>
-            <ion-segment color="primary" :value="type" @ionChange="type = $event.target.value">
+            <ion-segment color="primary" mode="md"
+                         :value="type"
+                         @ionChange="type = $event.target.value">
                 <ion-segment-button value="all" layout="icon-start">
                     <ion-label>All</ion-label>
                     <ion-icon name="apps"></ion-icon>
@@ -18,7 +20,9 @@
         </ion-toolbar>
 
         <ion-toolbar>
-            <ion-segment color="success" :value="orderBy" @ionChange="orderBy = $event.target.value">
+            <ion-segment color="primary" mode="md"
+                         :value="orderBy"
+                         @ionChange="orderBy = $event.target.value">
                 <ion-segment-button value="newest" layout="icon-start">
                     <ion-label>Newest</ion-label>
                     <ion-icon name="pizza"></ion-icon>
@@ -31,8 +35,10 @@
         </ion-toolbar>
 
         <ion-toolbar class="filterContainer">
-            <ion-segment scrollable color="secondary"
-                         :value="filter" @ionChange="filter = $event.target.value">
+            <ion-segment scrollable mode="md"
+                         color="primary"
+                         :value="filter"
+                         @ionChange="filter = $event.target.value">
                 <ion-segment-button value="all" layout="icon-start">
                     <ion-label>All</ion-label>
                     <ion-icon name="apps"></ion-icon>
