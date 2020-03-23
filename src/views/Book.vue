@@ -13,7 +13,7 @@
         <ion-content class="ion-padding" v-if="book">
             <div class="modalHeader">
                 <ion-thumbnail class="thumbnailImg">
-                    <ion-img :src="book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : require('@/assets/NotAvailable.jpg')"></ion-img>
+                    <ion-img :src="imageLink != null ? imageLink : require('@/assets/NotAvailable.jpg')"></ion-img>
                 </ion-thumbnail>
             </div>
             <div class="border-b">
@@ -85,6 +85,24 @@
             },
             getDescription() {
                 return this.book.volumeInfo.description ? this.book.volumeInfo.description : 'Doesn\'t have Description...'
+            },
+            imageLink() {
+                // if (this.book.volumeInfo.imageLinks.extraLarge) {
+                //     return this.book.volumeInfo.imageLinks.extraLarge
+                // }
+                if (this.book.volumeInfo.imageLinks.large) {
+                    return this.book.volumeInfo.imageLinks.large
+                } else if (this.book.volumeInfo.imageLinks.medium) {
+                    return this.book.volumeInfo.imageLinks.medium
+                } else if (this.book.volumeInfo.imageLinks.small) {
+                    return this.book.volumeInfo.imageLinks.small
+                } else if (this.book.volumeInfo.imageLinks.thumbnail) {
+                    return this.book.volumeInfo.imageLinks.thumbnail
+                } else if (this.book.volumeInfo.imageLinks.smallThumbnail) {
+                    return this.book.volumeInfo.imageLinks.smallThumbnail
+                } else {
+                    return null
+                }
             }
         },
         methods: {
