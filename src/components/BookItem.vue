@@ -1,7 +1,7 @@
 <template>
     <ion-item @click="goToBook" class="transitionBookItem">
         <ion-thumbnail slot="start" class="bookImg">
-            <ion-img :src="book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.smallThumbnail : require('@/assets/NotAvailable.jpg')"></ion-img>
+            <ion-img :src="book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.smallThumbnail.replace(/^https?:\/\//i, 'https://') : require('@/assets/NotAvailable.jpg')"></ion-img>
         </ion-thumbnail>
         <ion-label class="labels">
             <h2>{{book.volumeInfo.title}}</h2>

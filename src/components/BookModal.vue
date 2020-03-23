@@ -13,7 +13,7 @@
         <ion-content class="ion-padding bookModalContent" fullscreen>
             <div class="modalHeader">
                 <ion-thumbnail class="thumbnailImg">
-                    <ion-img :src="book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : require('@/assets/NotAvailable.jpg')"></ion-img>
+                    <ion-img :src="book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail.replace(/^https?:\/\//i, 'https://') : require('@/assets/NotAvailable.jpg')"></ion-img>
                 </ion-thumbnail>
             </div>
             <div class="border-b">
