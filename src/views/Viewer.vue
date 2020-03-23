@@ -52,8 +52,8 @@
                 console.log('init')
 
                 let viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
-                
-                viewer.load(this.$route.params.bookId, this.notFound(), this.initialized());
+
+                viewer.load(this.$route.params.bookId, this.notFound(), this.initialized()); // Callbacks doesn't work...
             },
             notFound() {
                 console.log("could not embed the book!");

@@ -44,7 +44,7 @@
                     <p class="mt-0"><span v-html="getDescription"></span></p>
                 </ion-text>
             </div>
-            <ion-button expand="block" @click="goToViewer">Book Viewer</ion-button>
+            <ion-button expand="block" @click="goToViewer" :disabled="book.accessInfo.viewability === 'NO_PAGES'">Book Viewer</ion-button>
         </ion-content>
     </div>
 </template>
