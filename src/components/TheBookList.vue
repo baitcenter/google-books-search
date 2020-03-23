@@ -1,7 +1,8 @@
 <template>
     <ion-content fullscreen ref="theBookList">
         <transition name="fadeTop">
-            <div class="ion-text-center ion-margin-vertical" v-show="this.loading">
+            <div class="ion-text-center ion-margin-vertical" id="loaderTop"
+                 v-show="this.loading">
                 <ion-spinner color="dark"></ion-spinner>
             </div>
         </transition>
@@ -236,6 +237,12 @@
         opacity: 0;
     }
 
+    #loaderTop {
+        position: absolute;
+        z-index: 1;
+        transform: translateX(-50%);
+        left: 50%;
+    }
     .fadeTop-enter-active {
         transition: all .5s;
     }
@@ -244,6 +251,6 @@
     }
     .fadeTop-enter, .fadeTop-leave-to /* .fade-leave-active below version 2.1.8 */ {
         opacity: 0;
-        transform: translateY(-10px);
+        /*<!--transform: translateY(-20px);-->*/
     }
 </style>
