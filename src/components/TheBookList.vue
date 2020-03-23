@@ -1,17 +1,17 @@
 <template>
     <ion-content fullscreen ref="theBookList">
-        <transition name="fade">
-            <ion-text  class="ion-text-start" color="medium" v-if="this.totalItems">
-                <p class="nbResults">{{this.totalItems}} Résultats</p>
-            </ion-text>
-        </transition>
-
         <transition name="fadeTop">
             <div class="ion-text-center ion-margin-vertical" v-show="this.loading">
                 <ion-spinner color="dark"></ion-spinner>
             </div>
         </transition>
 
+
+        <transition name="fade">
+            <ion-text  class="ion-text-start" color="medium" v-if="this.totalItems">
+                <p class="nbResults">{{this.totalItems}} Résultats</p>
+            </ion-text>
+        </transition>
         <ion-list class="booksContainer" scroll-y="true">
             <transition-group name="list" tag="div">
                 <BookItem v-for="(book, index) in this.books"

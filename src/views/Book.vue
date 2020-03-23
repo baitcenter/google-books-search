@@ -44,6 +44,7 @@
                     <p class="mt-0"><span v-html="getDescription"></span></p>
                 </ion-text>
             </div>
+            <ion-button expand="block" @click="goToViewer">Book Viewer</ion-button>
         </ion-content>
     </div>
 </template>
@@ -81,6 +82,9 @@
             }
         },
         methods: {
+            goToViewer() {
+                this.$router.push({ name: 'viewer', params: { bookId: this.book.id }});
+            },
             getBook() {
                     axios.get(`https://www.googleapis.com/books/v1/volumes/${this.$route.params.bookId}`)
                         .then(response => {
