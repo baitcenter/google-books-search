@@ -45,6 +45,12 @@
                 </ion-text>
             </div>
             <ion-button expand="block" @click="goToViewer" :disabled="book.accessInfo.viewability === 'NO_PAGES'">Book Viewer</ion-button>
+
+            <div class="qrCodeContainer">
+                <ion-thumbnail class="thumbnailQrCode">
+                    <ion-img :src="`https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=https://books.google.fr/books?id=${this.$route.params.bookId}&source=qrcode`"></ion-img>
+                </ion-thumbnail>
+            </div>
         </ion-content>
     </div>
 </template>
@@ -125,6 +131,14 @@
     }
     .chip {
         margin-left: 0;
+    }
+    .qrCodeContainer {
+        display: flex;
+        justify-content: center;
+        .thumbnailQrCode {
+            width: 75%;
+            height: auto;
+        }
     }
 
     .border-b {

@@ -9,7 +9,7 @@
 
         <transition name="fade">
             <ion-text  class="ion-text-start" color="medium" v-if="this.totalItems">
-                <p class="nbResults">{{this.totalItems}} Résultats</p>
+                <p class="nbResults">{{this.totalItems}} Results</p>
             </ion-text>
         </transition>
         <ion-list class="booksContainer" scroll-y="true">
