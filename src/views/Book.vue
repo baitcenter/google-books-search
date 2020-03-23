@@ -91,15 +91,15 @@
                 //     return this.book.volumeInfo.imageLinks.extraLarge
                 // }
                 if (this.book.volumeInfo.imageLinks.large) {
-                    return this.book.volumeInfo.imageLinks.large
+                    return this.book.volumeInfo.imageLinks.large.replace(/^https?:\/\//i, "https://")
                 } else if (this.book.volumeInfo.imageLinks.medium) {
-                    return this.book.volumeInfo.imageLinks.medium
+                    return this.book.volumeInfo.imageLinks.medium.replace(/^https?:\/\//i, "https://")
                 } else if (this.book.volumeInfo.imageLinks.small) {
-                    return this.book.volumeInfo.imageLinks.small
+                    return this.book.volumeInfo.imageLinks.small.replace(/^https?:\/\//i, "https://")
                 } else if (this.book.volumeInfo.imageLinks.thumbnail) {
-                    return this.book.volumeInfo.imageLinks.thumbnail
+                    return this.book.volumeInfo.imageLinks.thumbnail.replace(/^https?:\/\//i, "https://")
                 } else if (this.book.volumeInfo.imageLinks.smallThumbnail) {
-                    return this.book.volumeInfo.imageLinks.smallThumbnail
+                    return this.book.volumeInfo.imageLinks.smallThumbnail.replace(/^https?:\/\//i, "https://")
                 } else {
                     return null
                 }
